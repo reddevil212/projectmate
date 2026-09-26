@@ -38,7 +38,7 @@ Welcome to the **ProjectMate API Reference**. This document provides comprehensi
 #### Request:
 ```json
 {
-  "name": "Sayan Roy",
+  "name": "Sayan Pal",
   "email": "sayan@example.com",
   "password": "Password@123"
 }
@@ -52,7 +52,7 @@ Welcome to the **ProjectMate API Reference**. This document provides comprehensi
   "tokenType": "Bearer",
   "user": {
     "id": 1,
-    "name": "Sayan Roy",
+    "name": "Sayan Pal",
     "email": "sayan@example.com",
     "createdAt": "2026-09-26T10:30:00"
   }
@@ -83,7 +83,7 @@ Welcome to the **ProjectMate API Reference**. This document provides comprehensi
   "tokenType": "Bearer",
   "user": {
     "id": 1,
-    "name": "Sayan Roy",
+    "name": "Sayan Pal",
     "email": "sayan@example.com",
     "createdAt": "2026-09-26T10:30:00"
   }
@@ -113,7 +113,7 @@ Welcome to the **ProjectMate API Reference**. This document provides comprehensi
   "tokenType": "Bearer",
   "user": {
     "id": 1,
-    "name": "Sayan Roy",
+    "name": "Sayan Pal",
     "email": "sayan@example.com",
     "createdAt": "2026-09-26T10:30:00"
   }
@@ -166,7 +166,7 @@ Welcome to the **ProjectMate API Reference**. This document provides comprehensi
   "id": 6,
   "owner": {
     "id": 1,
-    "name": "Sayan Roy",
+    "name": "Sayan Pal",
     "email": "sayan@example.com",
     "createdAt": "2026-09-26T10:30:00"
   },
@@ -193,7 +193,7 @@ Welcome to the **ProjectMate API Reference**. This document provides comprehensi
   "id": 6,
   "owner": {
     "id": 1,
-    "name": "Sayan Roy",
+    "name": "Sayan Pal",
     "email": "sayan@example.com",
     "createdAt": "2026-09-26T10:30:00"
   },
@@ -224,7 +224,7 @@ Welcome to the **ProjectMate API Reference**. This document provides comprehensi
     "id": 6,
     "owner": {
       "id": 1,
-      "name": "Sayan Roy",
+      "name": "Sayan Pal",
       "email": "sayan@example.com",
       "createdAt": "2026-09-26T10:30:00"
     },
@@ -396,7 +396,7 @@ Welcome to the **ProjectMate API Reference**. This document provides comprehensi
     "projectId": 6,
     "user": {
       "id": 1,
-      "name": "Sayan Roy",
+      "name": "Sayan Pal",
       "email": "sayan@example.com"
     },
     "role": "OWNER",
