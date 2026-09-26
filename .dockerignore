@@ -1,0 +1,9 @@
+.gradle
+build
+.git
+.gitignore
+.idea
+*.bin
+*.log
+local.properties
+.env
