@@ -18,12 +18,13 @@ Welcome to the **ProjectMate API Reference**. This document provides comprehensi
 ## 📑 Table of Contents
 
 1. [Authentication APIs (`/api/auth/v1`)](#1-authentication-apis)
-2. [Project Management APIs (`/api/projects`)](#2-project-management-apis)
-3. [Project Member APIs (`/api/projects`)](#3-project-member-apis)
-4. [Master Skill Catalog APIs (`/api/skills`)](#4-master-skill-catalog-apis)
-5. [Project Tech Stack Requirements APIs (`/api/project-skills`)](#5-project-tech-stack-requirements-apis)
-6. [Project Roles Catalog APIs (`/api/project-roles`)](#6-project-roles-catalog-apis)
-7. [Health Check APIs (`/health`, `/api/health`)](#7-health-check-apis)
+2. [User Management APIs (`/api/users`)](#2-user-management-apis)
+3. [Project Management APIs (`/api/projects`)](#3-project-management-apis)
+4. [Project Member APIs (`/api/projects`)](#4-project-member-apis)
+5. [Master Skill Catalog APIs (`/api/skills`)](#5-master-skill-catalog-apis)
+6. [Project Tech Stack Requirements APIs (`/api/project-skills`)](#6-project-tech-stack-requirements-apis)
+7. [Project Roles Catalog APIs (`/api/project-roles`)](#7-project-roles-catalog-apis)
+8. [Health Check APIs (`/health`, `/api/health`)](#8-health-check-apis)
 
 ---
 
@@ -140,9 +141,175 @@ Welcome to the **ProjectMate API Reference**. This document provides comprehensi
 
 ---
 
-## 2. Project Management APIs
+## 2. User Management APIs
 
-### 2.1 Create Project
+### 2.1 Get All Users
+- **Method**: `GET`
+- **Endpoint**: `/api/users`
+- **Description**: Retrieves a list of all registered users in the system.
+- **Auth Required**: Yes
+
+#### Response (`200 OK`):
+```json
+[
+  {
+    "id": 1,
+    "name": "Sayan Pal",
+    "email": "sayan@example.com",
+    "createdAt": "2026-09-26T10:30:00"
+  }
+]
+```
+
+---
+
+### 2.2 Get User By ID
+- **Method**: `GET`
+- **Endpoint**: `/api/users/{id}`
+- **Description**: Retrieves detailed information for a user by their user ID.
+- **Auth Required**: Yes
+
+#### Response (`200 OK`):
+```json
+{
+  "id": 1,
+  "name": "Sayan Pal",
+  "email": "sayan@example.com",
+  "createdAt": "2026-09-26T10:30:00"
+}
+```
+
+---
+
+### 2.3 Create User
+- **Method**: `POST`
+- **Endpoint**: `/api/users`
+- **Description**: Creates a new user record.
+- **Auth Required**: Yes
+
+#### Request:
+```json
+{
+  "name": "Jane Doe",
+  "email": "jane@example.com",
+  "password": "Password@123"
+}
+```
+
+#### Response (`201 Created`):
+```json
+{
+  "id": 2,
+  "name": "Jane Doe",
+  "email": "jane@example.com",
+  "createdAt": "2026-09-29T08:00:00"
+}
+```
+
+---
+
+### 2.4 Update User
+- **Method**: `PUT`
+- **Endpoint**: `/api/users/{id}`
+- **Description**: Updates user profile details such as name, email, or password.
+- **Auth Required**: Yes
+
+#### Request:
+```json
+{
+  "name": "Jane Doe Updated",
+  "email": "jane.updated@example.com",
+  "password": "NewPassword@123"
+}
+```
+
+#### Response (`200 OK`):
+```json
+{
+  "id": 2,
+  "name": "Jane Doe Updated",
+  "email": "jane.updated@example.com",
+  "createdAt": "2026-09-29T08:00:00"
+}
+```
+
+---
+
+### 2.5 Delete User
+- **Method**: `DELETE`
+- **Endpoint**: `/api/users/{id}`
+- **Description**: Deletes a user by their ID.
+- **Auth Required**: Yes
+
+#### Response (`204 No Content`): Empty response body.
+
+---
+
+### 2.6 Search Users By Name
+- **Method**: `GET`
+- **Endpoint**: `/api/users/search?name={name}`
+- **Description**: Searches users matching a name substring (case-insensitive).
+- **Auth Required**: Yes
+
+#### Response (`200 OK`):
+```json
+[
+  {
+    "id": 1,
+    "name": "Sayan Pal",
+    "email": "sayan@example.com",
+    "createdAt": "2026-09-26T10:30:00"
+  }
+]
+```
+
+---
+
+### 2.7 Get User By Email
+- **Method**: `GET`
+- **Endpoint**: `/api/users/search/email?email={email}`
+- **Description**: Retrieves a user matching the specified email address.
+- **Auth Required**: Yes
+
+#### Response (`200 OK`):
+```json
+{
+  "id": 1,
+  "name": "Sayan Pal",
+  "email": "sayan@example.com",
+  "createdAt": "2026-09-26T10:30:00"
+}
+```
+
+---
+
+### 2.8 Get Users By Role
+- **Method**: `GET`
+- **Endpoint**: `/api/users/search/role?role={role}`
+- **Description**: Returns all users matching a specified role.
+- **Auth Required**: Yes
+
+---
+
+### 2.9 Get Users By Role IN List
+- **Method**: `GET`
+- **Endpoint**: `/api/users/search/role/in?roles={roles}`
+- **Description**: Filters users whose role is contained in the provided list of roles.
+- **Auth Required**: Yes
+
+---
+
+### 2.10 Get Users By Role NOT IN List
+- **Method**: `GET`
+- **Endpoint**: `/api/users/search/role/not-in?roles={roles}`
+- **Description**: Filters users whose role is not in the provided list of roles.
+- **Auth Required**: Yes
+
+---
+
+## 3. Project Management APIs
+
+### 3.1 Create Project
 - **Method**: `POST`
 - **Endpoint**: `/api/projects/create`
 - **Description**: Creates a new project and automatically assigns the user (`ownerId`) as a `ProjectMember` with role `OWNER`.
@@ -181,7 +348,7 @@ Welcome to the **ProjectMate API Reference**. This document provides comprehensi
 
 ---
 
-### 2.2 Get Project By ID
+### 3.2 Get Project By ID
 - **Method**: `GET`
 - **Endpoint**: `/api/projects/{id}`
 - **Description**: Retrieves details for a specific project by its ID.
@@ -208,7 +375,7 @@ Welcome to the **ProjectMate API Reference**. This document provides comprehensi
 
 ---
 
-### 2.3 List Projects By Owner ID
+### 3.3 List Projects By Owner ID
 - **Method**: `GET`
 - **Endpoint**: `/api/projects?ownerId={ownerId}`
 - **Description**: Returns all projects created by a specific owner ID.
@@ -240,7 +407,7 @@ Welcome to the **ProjectMate API Reference**. This document provides comprehensi
 
 ---
 
-### 2.4 Search Projects By Name
+### 3.4 Search Projects By Name
 - **Method**: `GET`
 - **Endpoint**: `/api/projects/search?name={name}`
 - **Description**: Searches projects by a substring matching their name (case-insensitive).
@@ -262,7 +429,7 @@ Welcome to the **ProjectMate API Reference**. This document provides comprehensi
 
 ---
 
-### 2.5 Search Projects By Type
+### 3.5 Search Projects By Type
 - **Method**: `GET`
 - **Endpoint**: `/api/projects/search/type?type={type}`
 - **Description**: Filters projects by category/type (e.g., `Web Application`, `Mobile`, `AI`).
@@ -281,7 +448,7 @@ Welcome to the **ProjectMate API Reference**. This document provides comprehensi
 
 ---
 
-### 2.6 Search Projects By Status
+### 3.6 Search Projects By Status
 - **Method**: `GET`
 - **Endpoint**: `/api/projects/search/status?status={status}`
 - **Description**: Filters projects by status (e.g., `OPEN`, `IN_PROGRESS`, `COMPLETED`).
@@ -300,7 +467,7 @@ Welcome to the **ProjectMate API Reference**. This document provides comprehensi
 
 ---
 
-### 2.7 Search Projects By Owner and Status
+### 3.7 Search Projects By Owner and Status
 - **Method**: `GET`
 - **Endpoint**: `/api/projects/search/owner-status?ownerId={ownerId}&status={status}`
 - **Description**: Filters projects belonging to a specific owner with a specific status.
@@ -308,7 +475,15 @@ Welcome to the **ProjectMate API Reference**. This document provides comprehensi
 
 ---
 
-### 2.8 Update Project
+### 3.8 Search Project By Exact Name
+- **Method**: `GET`
+- **Endpoint**: `/api/projects/search/exact-name?name={name}`
+- **Description**: Retrieves a project matching an exact project name.
+- **Auth Required**: Yes
+
+---
+
+### 3.9 Update Project
 - **Method**: `PUT`
 - **Endpoint**: `/api/projects/update/{id}`
 - **Description**: Updates project fields for an existing project.
@@ -337,7 +512,7 @@ Welcome to the **ProjectMate API Reference**. This document provides comprehensi
 
 ---
 
-### 2.9 Delete Project
+### 3.10 Delete Project
 - **Method**: `DELETE`
 - **Endpoint**: `/api/projects/delete/{id}`
 - **Description**: Deletes a project by its ID.
@@ -347,9 +522,9 @@ Welcome to the **ProjectMate API Reference**. This document provides comprehensi
 
 ---
 
-## 3. Project Member APIs
+## 4. Project Member APIs
 
-### 3.1 Add Member To Project
+### 4.1 Add Member To Project
 - **Method**: `POST`
 - **Endpoint**: `/api/projects/{projectId}/members`
 - **Description**: Adds a user to a project with a platform role (`MEMBER`, `ADMIN`) and an optional project role (`FRONTEND DEV`, `BACKEND DEV`, etc.).
@@ -382,7 +557,7 @@ Welcome to the **ProjectMate API Reference**. This document provides comprehensi
 
 ---
 
-### 3.2 List All Project Members
+### 4.2 List All Project Members
 - **Method**: `GET`
 - **Endpoint**: `/api/projects/{projectId}/members`
 - **Description**: Returns all members belonging to a project.
@@ -420,7 +595,7 @@ Welcome to the **ProjectMate API Reference**. This document provides comprehensi
 
 ---
 
-### 3.3 Check Membership Status
+### 4.3 Check Membership Status
 - **Method**: `GET`
 - **Endpoint**: `/api/projects/{projectId}/members/check?userId={userId}`
 - **Description**: Checks whether a user is a member of the project.
@@ -433,7 +608,7 @@ true
 
 ---
 
-### 3.4 Check Owner Status
+### 4.4 Check Owner Status
 - **Method**: `GET`
 - **Endpoint**: `/api/projects/{projectId}/owner/check?userId={userId}`
 - **Description**: Checks if a user is the owner of a project.
@@ -446,7 +621,7 @@ true
 
 ---
 
-### 3.5 Update Member Platform Role
+### 4.5 Update Member Platform Role
 - **Method**: `PUT`
 - **Endpoint**: `/api/projects/{projectId}/members/{userId}/role?role={role}`
 - **Description**: Updates the membership role (e.g. from `MEMBER` to `ADMIN`).
@@ -465,7 +640,7 @@ true
 
 ---
 
-### 3.6 Update Member Title in Project
+### 4.6 Update Member Title in Project
 - **Method**: `PUT`
 - **Endpoint**: `/api/projects/{projectId}/members/{userId}/role-in-project?roleInProject={roleInProject}`
 - **Description**: Updates a member's specific title/role in the project (e.g. `UI/UX DESIGNER`).
@@ -484,7 +659,7 @@ true
 
 ---
 
-### 3.7 Remove Member From Project
+### 4.7 Remove Member From Project
 - **Method**: `DELETE`
 - **Endpoint**: `/api/projects/{projectId}/members/{userId}`
 - **Description**: Removes a member from a project.
@@ -494,7 +669,7 @@ true
 
 ---
 
-### 3.8 List All Projects for a User
+### 4.8 List All Projects for a User
 - **Method**: `GET`
 - **Endpoint**: `/api/projects/members/user/{userId}`
 - **Description**: Retrieves all project memberships for a given user ID.
@@ -502,9 +677,9 @@ true
 
 ---
 
-## 4. Master Skill Catalog APIs
+## 5. Master Skill Catalog APIs
 
-### 4.1 Create Skill
+### 5.1 Create Skill
 - **Method**: `POST`
 - **Endpoint**: `/api/skills`
 - **Description**: Adds a new skill to the global master skill catalog.
@@ -527,7 +702,7 @@ true
 
 ---
 
-### 4.2 Get All Skills
+### 5.2 Get All Skills
 - **Method**: `GET`
 - **Endpoint**: `/api/skills`
 - **Description**: Returns all skills available in the master catalog.
@@ -544,7 +719,7 @@ true
 
 ---
 
-### 4.3 Search Skill By Name
+### 5.3 Search Skill By Name
 - **Method**: `GET`
 - **Endpoint**: `/api/skills/search?name={name}`
 - **Description**: Searches a skill by name (case-insensitive).
@@ -552,7 +727,7 @@ true
 
 ---
 
-### 4.4 Update Skill
+### 5.4 Update Skill
 - **Method**: `PUT`
 - **Endpoint**: `/api/skills/{id}`
 - **Description**: Updates the name of an existing skill.
@@ -567,7 +742,7 @@ true
 
 ---
 
-### 4.5 Delete Skill
+### 5.5 Delete Skill
 - **Method**: `DELETE`
 - **Endpoint**: `/api/skills/{id}`
 - **Description**: Deletes a skill from the catalog.
@@ -577,9 +752,9 @@ true
 
 ---
 
-## 5. Project Tech Stack Requirements APIs
+## 6. Project Tech Stack Requirements APIs
 
-### 5.1 Add Required Skill to Project
+### 6.1 Add Required Skill to Project
 - **Method**: `POST`
 - **Endpoint**: `/api/project-skills`
 - **Description**: Associates a required skill with a project along with the target proficiency level (`Beginner`, `Intermediate`, `Expert`).
@@ -609,7 +784,7 @@ true
 
 ---
 
-### 5.2 List All Required Skills for a Project
+### 6.2 List All Required Skills for a Project
 - **Method**: `GET`
 - **Endpoint**: `/api/project-skills/project/{projectId}`
 - **Description**: Returns all tech stack requirements for a specified project ID.
@@ -635,7 +810,7 @@ true
 
 ---
 
-### 5.3 Filter Project Requirements By Skill Level
+### 6.3 Filter Project Requirements By Skill Level
 - **Method**: `GET`
 - **Endpoint**: `/api/project-skills/project/{projectId}/level/{level}`
 - **Description**: Returns skills required for a project matching a specific level.
@@ -643,7 +818,7 @@ true
 
 ---
 
-### 5.4 Update Requirement Level
+### 6.4 Update Requirement Level
 - **Method**: `PUT`
 - **Endpoint**: `/api/project-skills/{id}?level={level}`
 - **Description**: Updates the proficiency level required for a project skill.
@@ -651,7 +826,7 @@ true
 
 ---
 
-### 5.5 Remove Skill Requirement
+### 6.5 Remove Skill Requirement
 - **Method**: `DELETE`
 - **Endpoint**: `/api/project-skills/{id}`
 - **Description**: Removes a project skill requirement by ID.
@@ -659,9 +834,9 @@ true
 
 ---
 
-## 6. Project Roles Catalog APIs
+## 7. Project Roles Catalog APIs
 
-### 6.1 Create Project Role Title
+### 7.1 Create Project Role Title
 - **Method**: `POST`
 - **Endpoint**: `/api/project-roles`
 - **Description**: Adds a new standardized project role title to the master catalog.
@@ -684,7 +859,7 @@ true
 
 ---
 
-### 6.2 Get All Project Roles
+### 7.2 Get All Project Roles
 - **Method**: `GET`
 - **Endpoint**: `/api/project-roles`
 - **Description**: Lists all standardized project role titles.
@@ -701,7 +876,7 @@ true
 
 ---
 
-### 6.3 Search Role By Name
+### 7.3 Search Role By Name
 - **Method**: `GET`
 - **Endpoint**: `/api/project-roles/search?name={name}`
 - **Description**: Searches a project role title by name (case-insensitive).
@@ -709,7 +884,7 @@ true
 
 ---
 
-### 6.4 Delete Project Role
+### 7.4 Delete Project Role
 - **Method**: `DELETE`
 - **Endpoint**: `/api/project-roles/{id}`
 - **Description**: Deletes a role title from the catalog.
@@ -719,9 +894,9 @@ true
 
 ---
 
-## 7. Health Check APIs
+## 8. Health Check APIs
 
-### 7.1 Health Status Check
+### 8.1 Health Status Check
 - **Method**: `GET`
 - **Endpoint**: `/health` or `/api/health`
 - **Description**: Simple ping endpoint to verify application operational health.

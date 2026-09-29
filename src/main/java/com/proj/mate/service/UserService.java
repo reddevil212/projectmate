@@ -97,4 +97,38 @@ public class UserService {
                 .map(user -> modelMapper.map(user, UserResponseDto.class));
     }
 
+    @Transactional
+    public List<UserResponseDto> getUsersByRole(String role) {
+
+        return userRepository.findByRole(role)
+                .stream()
+                .map(user -> modelMapper.map(user, UserResponseDto.class))
+                .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public List<UserResponseDto> getUsersByRoleIn(List<String> roles) {
+        return userRepository.findByRoleIn(roles)
+                .stream()
+                .map(user -> modelMapper.map(user, UserResponseDto.class))
+                .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public List<UserResponseDto> getUsersByRoleNotIn(List<String> roles) {
+        return userRepository.findByRoleNotIn(roles)
+                .stream()
+                .map(user -> modelMapper.map(user, UserResponseDto.class))
+                .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public List<UserResponseDto> getUsersByNameContainingIgnoreCase(String name) {
+        return userRepository.findByNameContainingIgnoreCase(name)
+                .stream()
+                .map(user -> modelMapper.map(user, UserResponseDto.class))
+                .collect(Collectors.toList());
+
+    }
+
 }

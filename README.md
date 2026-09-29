@@ -7,6 +7,7 @@
 ## 🌟 Key Features
 
 - 🔐 **Stateless JWT Authentication**: Secure user registration, authentication, access tokens, and refresh token rotation.
+- 👤 **User Management**: Comprehensive endpoints to search, retrieve, update, and manage user profiles and roles.
 - 📁 **Project Management**: Create, update, search, and manage project listings.
 - 👥 **Team Member Operations**: Join projects, manage roles (`OWNER`, `MEMBER`), and assign project-specific titles (`FRONTEND DEV`, `BACKEND DEV`, etc.).
 - 🛠️ **Master Skill Catalog**: Centralized tech stack lookup table.
@@ -103,7 +104,24 @@ Authorization: Bearer <your_jwt_access_token>
 
 ---
 
-### 📂 2. Projects (`/api/projects`)
+### 👤 2. User Management (`/api/users`)
+
+| Method | Endpoint | Description |
+| :--- | :--- | :--- |
+| `GET` | `/api/users` | List all users |
+| `GET` | `/api/users/{id}` | Get user details by ID |
+| `POST` | `/api/users` | Create user |
+| `PUT` | `/api/users/{id}` | Update user details |
+| `DELETE` | `/api/users/{id}` | Delete user by ID |
+| `GET` | `/api/users/search?name={name}` | Search users by name |
+| `GET` | `/api/users/search/email?email={email}` | Search user by email |
+| `GET` | `/api/users/search/role?role={role}` | Search users by role |
+| `GET` | `/api/users/search/role/in?roles={roles}` | Search users matching a list of roles |
+| `GET` | `/api/users/search/role/not-in?roles={roles}` | Search users excluding a list of roles |
+
+---
+
+### 📂 3. Projects (`/api/projects`)
 
 | Method | Endpoint | Description |
 | :--- | :--- | :--- |
@@ -131,7 +149,7 @@ Authorization: Bearer <your_jwt_access_token>
 
 ---
 
-### 👥 3. Project Members (`/api/projects`)
+### 👥 4. Project Members (`/api/projects`)
 
 | Method | Endpoint | Description |
 | :--- | :--- | :--- |
@@ -146,7 +164,7 @@ Authorization: Bearer <your_jwt_access_token>
 
 ---
 
-### 🛠️ 4. Master Skills Catalog (`/api/skills`)
+### 🛠️ 5. Master Skills Catalog (`/api/skills`)
 
 | Method | Endpoint | Description |
 | :--- | :--- | :--- |
@@ -159,7 +177,7 @@ Authorization: Bearer <your_jwt_access_token>
 
 ---
 
-### ⚡ 5. Project Tech Stack Requirements (`/api/project-skills`)
+### ⚡ 6. Project Tech Stack Requirements (`/api/project-skills`)
 
 | Method | Endpoint | Description |
 | :--- | :--- | :--- |
@@ -183,7 +201,7 @@ Authorization: Bearer <your_jwt_access_token>
 
 ---
 
-### 👔 6. Project Roles Catalog (`/api/project-roles`)
+### 👔 7. Project Roles Catalog (`/api/project-roles`)
 
 | Method | Endpoint | Description |
 | :--- | :--- | :--- |
