@@ -24,7 +24,8 @@ Welcome to the **ProjectMate API Reference**. This document provides comprehensi
 5. [Master Skill Catalog APIs (`/api/skills`)](#5-master-skill-catalog-apis)
 6. [Project Tech Stack Requirements APIs (`/api/project-skills`)](#6-project-tech-stack-requirements-apis)
 7. [Project Roles Catalog APIs (`/api/project-roles`)](#7-project-roles-catalog-apis)
-8. [Health Check APIs (`/health`, `/api/health`)](#8-health-check-apis)
+8. [AI Assistance & Project Generation APIs (`/api/ai`)](#8-ai-assistance--project-generation-apis)
+9. [Health Check APIs (`/health`, `/api/health`)](#9-health-check-apis)
 
 ---
 
@@ -894,9 +895,192 @@ true
 
 ---
 
-## 8. Health Check APIs
+## 8. AI Assistance & Project Generation APIs
 
-### 8.1 Health Status Check
+### 8.1 Analyze Project Idea / Prompt
+- **Method**: `POST`
+- **Endpoint**: `/api/ai/analyze`
+- **Description**: Analyzes a user's project idea/prompt using Google AI Studio Gemini API (`gemini-2.5-flash`) and extracts structured project info, tech stack requirements with skill levels, and 4 team member roles with required skill proficiency scores (1-5). Returns a fallback response if the AI service API key is unconfigured or unavailable.
+- **Auth Required**: Yes
+
+#### Request:
+```json
+{
+  "prompt": "A real-time workspace for remote design teams featuring live canvas sharing and AI asset generation."
+}
+```
+
+#### Response (`200 OK`):
+```json
+{
+  "name": "DesignSync AI",
+  "type": "Full Stack",
+  "description": "A real-time workspace for remote design teams featuring live canvas sharing and AI asset generation.",
+  "memberCount": 4,
+  "status": "OPEN",
+  "projectSkills": [
+    {
+      "skillName": "Next.js",
+      "level": "Expert"
+    },
+    {
+      "skillName": "WebSockets",
+      "level": "Intermediate"
+    },
+    {
+      "skillName": "PostgreSQL",
+      "level": "Intermediate"
+    }
+  ],
+  "roles": [
+    {
+      "roleName": "Frontend Lead",
+      "skills": [
+        {
+          "skillName": "Next.js",
+          "proficiencyRequired": 5
+        },
+        {
+          "skillName": "TypeScript",
+          "proficiencyRequired": 4
+        }
+      ]
+    },
+    {
+      "roleName": "Backend Engineer",
+      "skills": [
+        {
+          "skillName": "WebSockets",
+          "proficiencyRequired": 4
+        },
+        {
+          "skillName": "PostgreSQL",
+          "proficiencyRequired": 3
+        }
+      ]
+    },
+    {
+      "roleName": "DevOps Specialist",
+      "skills": [
+        {
+          "skillName": "Docker",
+          "proficiencyRequired": 4
+        }
+      ]
+    },
+    {
+      "roleName": "UI/UX Designer",
+      "skills": [
+        {
+          "skillName": "Figma",
+          "proficiencyRequired": 4
+        }
+      ]
+    }
+  ]
+}
+```
+
+---
+
+### 8.2 Create Project From AI Prompt
+- **Method**: `POST`
+- **Endpoint**: `/api/ai/create-project?ownerId={ownerId}`
+- **Description**: Analyzes a user's prompt using Gemini API and automatically creates and persists the `Project`, required `Skills`, and 4 `Project Roles` in the database, assigning the specified user (`ownerId`) as `OWNER`.
+- **Auth Required**: Yes
+
+#### Query Params:
+- `ownerId` (Long, required): ID of the user creating the project.
+
+#### Request:
+```json
+{
+  "prompt": "A real-time workspace for remote design teams featuring live canvas sharing and AI asset generation."
+}
+```
+
+#### Response (`200 OK`):
+```json
+{
+  "id": 10,
+  "owner": {
+    "id": 1,
+    "name": "Sayan Pal",
+    "email": "sayan@example.com",
+    "createdAt": "2026-09-26T10:30:00"
+  },
+  "name": "DesignSync AI",
+  "type": "Full Stack",
+  "description": "A real-time workspace for remote design teams featuring live canvas sharing and AI asset generation.",
+  "memberCount": 4,
+  "createdAt": "2026-09-29T12:00:00",
+  "status": "OPEN"
+}
+```
+
+---
+
+### 8.3 Save AI Analysis as Project
+- **Method**: `POST`
+- **Endpoint**: `/api/ai/save-analysis?ownerId={ownerId}`
+- **Description**: Persists an existing AI project analysis object (`AiProjectAnalysisResponse`) directly into the database as a new project with its skills and role requirements.
+- **Auth Required**: Yes
+
+#### Query Params:
+- `ownerId` (Long, required): ID of the user creating the project.
+
+#### Request:
+```json
+{
+  "name": "DesignSync AI",
+  "type": "Full Stack",
+  "description": "A real-time workspace for remote design teams featuring live canvas sharing and AI asset generation.",
+  "memberCount": 4,
+  "status": "OPEN",
+  "projectSkills": [
+    {
+      "skillName": "Next.js",
+      "level": "Expert"
+    }
+  ],
+  "roles": [
+    {
+      "roleName": "Frontend Lead",
+      "skills": [
+        {
+          "skillName": "Next.js",
+          "proficiencyRequired": 5
+        }
+      ]
+    }
+  ]
+}
+```
+
+#### Response (`200 OK`):
+```json
+{
+  "id": 10,
+  "owner": {
+    "id": 1,
+    "name": "Sayan Pal",
+    "email": "sayan@example.com",
+    "createdAt": "2026-09-26T10:30:00"
+  },
+  "name": "DesignSync AI",
+  "type": "Full Stack",
+  "description": "A real-time workspace for remote design teams...",
+  "memberCount": 4,
+  "createdAt": "2026-09-29T12:00:00",
+  "status": "OPEN"
+}
+```
+
+---
+
+## 9. Health Check APIs
+
+### 9.1 Health Status Check
 - **Method**: `GET`
 - **Endpoint**: `/health` or `/api/health`
 - **Description**: Simple ping endpoint to verify application operational health.

@@ -13,6 +13,7 @@
 - 🛠️ **Master Skill Catalog**: Centralized tech stack lookup table.
 - ⚡ **Project Tech Stack Matching**: Map required skills and proficiency levels (`Beginner`, `Intermediate`, `Expert`) to projects.
 - 👔 **Project Roles Catalog**: Manage standardized open team positions across projects.
+- 🤖 **AI Project Analysis & Generation**: Use Google AI Studio Gemini API (`gemini-2.5-flash`) to analyze project prompts, generate structured project specs with 4 team member roles and tech stack requirements, and automatically persist projects to the database.
 
 ---
 
@@ -58,6 +59,10 @@
    jwt.secret=${JWT_SECRET:YOUR_SECURE_JWT_SECRET_KEY}
    jwt.expiration-ms=86400000
    jwt.refresh-expiration-ms=604800000
+
+   # Gemini AI Studio Configuration
+   gemini.api.key=${GEMINI_API_KEY:}
+   gemini.api.model=gemini-2.5-flash
    ```
 
 3. **Build the Application**:
@@ -211,6 +216,23 @@ Authorization: Bearer <your_jwt_access_token>
 | `GET` | `/api/project-roles/search?name={name}` | Search role by name |
 | `PUT` | `/api/project-roles/{id}` | Update role name |
 | `DELETE` | `/api/project-roles/{id}` | Delete role |
+
+---
+
+### 🤖 8. AI Assistance & Project Generation (`/api/ai`)
+
+| Method | Endpoint | Description |
+| :--- | :--- | :--- |
+| `POST` | `/api/ai/analyze` | Analyze project prompt & return structured project plan, skills, and 4 team roles |
+| `POST` | `/api/ai/create-project?ownerId={ownerId}` | Analyze prompt & automatically create & persist project, skills, and roles in DB |
+| `POST` | `/api/ai/save-analysis?ownerId={ownerId}` | Persist an existing AI project analysis object into the database |
+
+#### Analyze Project Example Request Body:
+```json
+{
+  "prompt": "A real-time workspace for remote design teams featuring live canvas sharing and AI asset generation."
+}
+```
 
 ---
 
