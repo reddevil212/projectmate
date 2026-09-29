@@ -10,7 +10,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
-public class CustomUserDetailsService extends UserInfo implements UserDetailsService {
+public class CustomUserDetailsService implements UserDetailsService {
 
     private final UserRepository userRepository;
 
@@ -29,10 +29,17 @@ public class CustomUserDetailsService extends UserInfo implements UserDetailsSer
                         )
                 );
 
+        String userRole = (userInfo.getRole() != null && !userInfo.getRole().trim().isEmpty())
+                ? userInfo.getRole()
+                : "USER";
+        if (!userRole.startsWith("ROLE_")) {
+            userRole = "ROLE_" + userRole;
+        }
+
         return User.builder()
                 .username(userInfo.getEmail())
                 .password(userInfo.getPassword())
-                .authorities("ROLE_USER")
+                .authorities(userRole)
                 .build();
     }
 }

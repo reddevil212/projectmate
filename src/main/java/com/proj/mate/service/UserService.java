@@ -1,6 +1,5 @@
 package com.proj.mate.service;
 
-
 import com.proj.mate.dto.UserRequestDto;
 import com.proj.mate.dto.UserResponseDto;
 import com.proj.mate.entity.UserInfo;
@@ -36,15 +35,16 @@ public class UserService {
             throw new RuntimeException("User already exists with email: " + requestDto.getEmail());
         }
 
-        // 1. Map incoming request data to UserInfo entity
         UserInfo user = modelMapper.map(requestDto, UserInfo.class);
-        user.setId(null); // Ensure ID is null for a new entity
+        user.setId(null);
 
         if (requestDto.getPassword() != null && !requestDto.getPassword().isEmpty()) {
             user.setPassword(passwordEncoder.encode(requestDto.getPassword()));
         }
 
-
+        if (user.getRole() == null || user.getRole().trim().isEmpty()) {
+            user.setRole("USER");
+        }
 
         UserInfo savedUser = userRepository.save(user);
         return modelMapper.map(savedUser, UserResponseDto.class);
@@ -77,7 +77,9 @@ public class UserService {
             existingUser.setPassword(passwordEncoder.encode(updatedUserDto.getPassword()));
         }
 
-
+        if (updatedUserDto.getRole() != null && !updatedUserDto.getRole().trim().isEmpty()) {
+            existingUser.setRole(updatedUserDto.getRole());
+        }
 
         UserInfo savedUser = userRepository.save(existingUser);
         return modelMapper.map(savedUser, UserResponseDto.class);
@@ -97,16 +99,15 @@ public class UserService {
                 .map(user -> modelMapper.map(user, UserResponseDto.class));
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public List<UserResponseDto> getUsersByRole(String role) {
-
         return userRepository.findByRole(role)
                 .stream()
                 .map(user -> modelMapper.map(user, UserResponseDto.class))
                 .collect(Collectors.toList());
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public List<UserResponseDto> getUsersByRoleIn(List<String> roles) {
         return userRepository.findByRoleIn(roles)
                 .stream()
@@ -114,7 +115,7 @@ public class UserService {
                 .collect(Collectors.toList());
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public List<UserResponseDto> getUsersByRoleNotIn(List<String> roles) {
         return userRepository.findByRoleNotIn(roles)
                 .stream()
@@ -122,13 +123,11 @@ public class UserService {
                 .collect(Collectors.toList());
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public List<UserResponseDto> getUsersByNameContainingIgnoreCase(String name) {
         return userRepository.findByNameContainingIgnoreCase(name)
                 .stream()
                 .map(user -> modelMapper.map(user, UserResponseDto.class))
                 .collect(Collectors.toList());
-
     }
-
 }

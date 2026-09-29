@@ -61,6 +61,7 @@ public class AuthService {
                 .name(requestDto.getName())
                 .email(requestDto.getEmail())
                 .password(passwordEncoder.encode(requestDto.getPassword()))
+                .role("USER")
                 .createdAt(LocalDateTime.now())
                 .build();
 
