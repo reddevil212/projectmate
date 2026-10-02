@@ -7,7 +7,7 @@
 ## 🌟 Key Features
 
 - 🔐 **Stateless JWT Authentication**: Secure user registration, authentication, access tokens, and refresh token rotation.
-- 👤 **User Profile & Social Links**: Manage bio/about, profile picture URL, GitHub link, LinkedIn link, and roles.
+- 👤 **User Profile & Social Links**: Manage bio/about, profile picture URL (`profilePic`), GitHub link, LinkedIn link, and roles.
 - 📁 **Project Management**: Create, update, search, manage project listings, track project `visibility` (`PUBLIC`/`PRIVATE`), and broadcast `latestUpdate` notes.
 - 👥 **Team Member Operations**: Join projects, manage roles (`OWNER`, `MEMBER`), and assign project-specific titles (`FRONTEND DEV`, `BACKEND DEV`, etc.).
 - 🛠️ **Master Skill Catalog**: Centralized tech stack lookup table.
@@ -110,8 +110,7 @@ Authorization: Bearer <your_jwt_access_token>
 | `GET` | `/api/users` | List all users |
 | `GET` | `/api/users/{id}` | Get user details by ID |
 | `POST` | `/api/users` | Create user |
-| `PUT` | `/api/users/{id}` | Update user details (`about`, `profilePic`, `githubLink`, `linkedinLink`) |
-| `PUT` | `/api/users/{id}/profile-pic?url={url}` | Save client-generated profile picture URL to DB |
+| `PUT` | `/api/users/{id}` | Update user profile details (`about`, `profilePic`, `githubLink`, `linkedinLink`) |
 | `DELETE` | `/api/users/{id}` | Delete user by ID |
 | `GET` | `/api/users/search?name={name}` | Search users by name |
 | `GET` | `/api/users/search/email?email={email}` | Search user by email |

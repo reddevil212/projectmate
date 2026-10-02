@@ -192,6 +192,7 @@ Welcome to the **ProjectMate API Reference**. This document provides comprehensi
   "email": "jane@example.com",
   "password": "Password@123",
   "about": "Frontend Specialist",
+  "profilePic": "https://res.cloudinary.com/demo/image/upload/v1234567/sample.jpg",
   "githubLink": "https://github.com/janedoe",
   "linkedinLink": "https://linkedin.com/in/janedoe"
 }
@@ -202,7 +203,7 @@ Welcome to the **ProjectMate API Reference**. This document provides comprehensi
 ### 2.4 Update User
 - **Method**: `PUT`
 - **Endpoint**: `/api/users/{id}`
-- **Description**: Updates user profile details including name, email, about bio, profile picture URL, and social links.
+- **Description**: Updates user profile details including name, email, about bio, profile picture URL (`profilePic`), and social links.
 - **Auth Required**: Yes
 
 #### Request:
@@ -216,30 +217,23 @@ Welcome to the **ProjectMate API Reference**. This document provides comprehensi
 }
 ```
 
----
-
-### 2.5 Update Profile Picture URL
-- **Method**: `PUT`
-- **Endpoint**: `/api/users/{id}/profile-pic?url={profilePicUrl}`
-- **Description**: Updates the `profile_pic` URL column in the database for user `{id}` with an image URL generated on the client side.
-- **Auth Required**: Yes
-
-#### Query Params:
-- `url` (String, required): Client-generated CDN or image URL.
-
 #### Response (`200 OK`):
 ```json
 {
   "id": 1,
-  "name": "Sayan Pal",
-  "email": "sayan@example.com",
-  "profilePic": "https://res.cloudinary.com/demo/image/upload/v1695744000/profile_1.jpg"
+  "name": "Jane Doe Updated",
+  "email": "jane@example.com",
+  "about": "Senior Full Stack Architect",
+  "profilePic": "https://res.cloudinary.com/demo/image/upload/v1234567/profile.jpg",
+  "githubLink": "https://github.com/janedoe-updated",
+  "linkedinLink": "https://linkedin.com/in/janedoe-updated",
+  "createdAt": "2026-09-26T10:30:00"
 }
 ```
 
 ---
 
-### 2.6 Delete User
+### 2.5 Delete User
 - **Method**: `DELETE`
 - **Endpoint**: `/api/users/{id}`
 - **Description**: Deletes a user by their ID.
@@ -247,7 +241,7 @@ Welcome to the **ProjectMate API Reference**. This document provides comprehensi
 
 ---
 
-### 2.7 Search Users By Name
+### 2.6 Search Users By Name
 - **Method**: `GET`
 - **Endpoint**: `/api/users/search?name={name}`
 - **Description**: Searches users matching a name substring (case-insensitive).
@@ -255,7 +249,7 @@ Welcome to the **ProjectMate API Reference**. This document provides comprehensi
 
 ---
 
-### 2.8 Get User By Email
+### 2.7 Get User By Email
 - **Method**: `GET`
 - **Endpoint**: `/api/users/search/email?email={email}`
 - **Description**: Retrieves a user matching the specified email address.
@@ -366,7 +360,7 @@ Welcome to the **ProjectMate API Reference**. This document provides comprehensi
 {
   "name": "ProjectMate Platform V2",
   "visibility": "PUBLIC",
-  "latestUpdate": "Added user profile pictures and social links",
+  "latestUpdate": "Updated team structure and features",
   "status": "IN_PROGRESS"
 }
 ```

@@ -102,16 +102,6 @@ public class UserService {
     }
 
     @Transactional
-    public UserResponseDto updateProfilePic(Long id, String profilePicUrl) {
-        UserInfo existingUser = userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("User not found with id: " + id));
-
-        existingUser.setProfilePic(profilePicUrl);
-        UserInfo savedUser = userRepository.save(existingUser);
-        return modelMapper.map(savedUser, UserResponseDto.class);
-    }
-
-    @Transactional
     public void deleteUser(Long id) {
         if (!userRepository.existsById(id)) {
             throw new RuntimeException("User not found with id: " + id);

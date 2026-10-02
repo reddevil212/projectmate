@@ -47,7 +47,7 @@ public class UserController {
                 .body(createdUser);
     }
 
-    // Update user
+    // Update user (including profilePic URL, about bio, links, name, etc.)
     @PutMapping("/{id}")
     public ResponseEntity<UserResponseDto> updateUser(
             @PathVariable Long id,
@@ -56,20 +56,6 @@ public class UserController {
         try {
             UserResponseDto user = userService.updateUser(id, updatedUserDto);
             return ResponseEntity.ok(user);
-        } catch (RuntimeException e) {
-            return ResponseEntity.notFound().build();
-        }
-    }
-
-    // Update user profile picture URL (generated on client side)
-    @PutMapping("/{id}/profile-pic")
-    public ResponseEntity<UserResponseDto> updateProfilePicUrl(
-            @PathVariable Long id,
-            @RequestParam String url) {
-
-        try {
-            UserResponseDto updatedUser = userService.updateProfilePic(id, url);
-            return ResponseEntity.ok(updatedUser);
         } catch (RuntimeException e) {
             return ResponseEntity.notFound().build();
         }
