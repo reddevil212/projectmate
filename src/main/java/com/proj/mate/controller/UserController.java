@@ -2,27 +2,22 @@ package com.proj.mate.controller;
 
 import com.proj.mate.dto.UserRequestDto;
 import com.proj.mate.dto.UserResponseDto;
-import com.proj.mate.service.ImageUploader;
 import com.proj.mate.service.UserService;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
 
     private final UserService userService;
-    private final ImageUploader imageUploader;
 
-    public UserController(UserService userService, ImageUploader imageUploader) {
+    public UserController(UserService userService) {
         this.userService = userService;
-        this.imageUploader = imageUploader;
     }
 
     // Get all users
@@ -66,31 +61,17 @@ public class UserController {
         }
     }
 
-    // Upload user profile picture to Cloudinary and update profile_pic column in DB
-    @PostMapping("/{id}/profile-pic")
-    public ResponseEntity<UserResponseDto> uploadProfilePic(
+    // Update user profile picture URL (generated on client side)
+    @PutMapping("/{id}/profile-pic")
+    public ResponseEntity<UserResponseDto> updateProfilePicUrl(
             @PathVariable Long id,
-            @RequestParam("file") MultipartFile file) {
+            @RequestParam String url) {
 
         try {
-            String imageUrl = imageUploader.uploadImage(file);
-            UserResponseDto updatedUser = userService.updateProfilePic(id, imageUrl);
+            UserResponseDto updatedUser = userService.updateProfilePic(id, url);
             return ResponseEntity.ok(updatedUser);
         } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
-    }
-
-    // Upload generic image to Cloudinary and return URL
-    @PostMapping("/upload-image")
-    public ResponseEntity<Map<String, String>> uploadImage(
-            @RequestParam("file") MultipartFile file) {
-
-        try {
-            String imageUrl = imageUploader.uploadImage(file);
-            return ResponseEntity.ok(Map.of("url", imageUrl));
-        } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            return ResponseEntity.notFound().build();
         }
     }
 

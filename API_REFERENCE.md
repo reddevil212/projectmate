@@ -210,6 +210,7 @@ Welcome to the **ProjectMate API Reference**. This document provides comprehensi
 {
   "name": "Jane Doe Updated",
   "about": "Senior Full Stack Architect",
+  "profilePic": "https://res.cloudinary.com/demo/image/upload/v1234567/profile.jpg",
   "githubLink": "https://github.com/janedoe-updated",
   "linkedinLink": "https://linkedin.com/in/janedoe-updated"
 }
@@ -217,15 +218,14 @@ Welcome to the **ProjectMate API Reference**. This document provides comprehensi
 
 ---
 
-### 2.5 Upload Profile Picture
-- **Method**: `POST`
-- **Endpoint**: `/api/users/{id}/profile-pic`
-- **Description**: Uploads a profile picture file to Cloudinary and automatically updates the `profile_pic` URL in the `user_info` database table.
-- **Content-Type**: `multipart/form-data`
+### 2.5 Update Profile Picture URL
+- **Method**: `PUT`
+- **Endpoint**: `/api/users/{id}/profile-pic?url={profilePicUrl}`
+- **Description**: Updates the `profile_pic` URL column in the database for user `{id}` with an image URL generated on the client side.
 - **Auth Required**: Yes
 
-#### Request (Form-Data):
-- `file`: MultipartFile image
+#### Query Params:
+- `url` (String, required): Client-generated CDN or image URL.
 
 #### Response (`200 OK`):
 ```json
@@ -239,23 +239,7 @@ Welcome to the **ProjectMate API Reference**. This document provides comprehensi
 
 ---
 
-### 2.6 Upload Generic Image
-- **Method**: `POST`
-- **Endpoint**: `/api/users/upload-image`
-- **Description**: Uploads any image file to Cloudinary and returns the generated secure CDN URL.
-- **Content-Type**: `multipart/form-data`
-- **Auth Required**: Yes
-
-#### Response (`200 OK`):
-```json
-{
-  "url": "https://res.cloudinary.com/demo/image/upload/v1695744000/sample.jpg"
-}
-```
-
----
-
-### 2.7 Delete User
+### 2.6 Delete User
 - **Method**: `DELETE`
 - **Endpoint**: `/api/users/{id}`
 - **Description**: Deletes a user by their ID.
@@ -263,7 +247,7 @@ Welcome to the **ProjectMate API Reference**. This document provides comprehensi
 
 ---
 
-### 2.8 Search Users By Name
+### 2.7 Search Users By Name
 - **Method**: `GET`
 - **Endpoint**: `/api/users/search?name={name}`
 - **Description**: Searches users matching a name substring (case-insensitive).
@@ -271,7 +255,7 @@ Welcome to the **ProjectMate API Reference**. This document provides comprehensi
 
 ---
 
-### 2.9 Get User By Email
+### 2.8 Get User By Email
 - **Method**: `GET`
 - **Endpoint**: `/api/users/search/email?email={email}`
 - **Description**: Retrieves a user matching the specified email address.
@@ -382,7 +366,7 @@ Welcome to the **ProjectMate API Reference**. This document provides comprehensi
 {
   "name": "ProjectMate Platform V2",
   "visibility": "PUBLIC",
-  "latestUpdate": "Added Cloudinary image uploads and user profiles",
+  "latestUpdate": "Added user profile pictures and social links",
   "status": "IN_PROGRESS"
 }
 ```

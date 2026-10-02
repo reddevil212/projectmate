@@ -7,8 +7,7 @@
 ## 🌟 Key Features
 
 - 🔐 **Stateless JWT Authentication**: Secure user registration, authentication, access tokens, and refresh token rotation.
-- 👤 **User Profile & Social Links**: Manage bio/about, GitHub link, LinkedIn link, and roles.
-- 📸 **Cloudinary Profile Picture Uploads**: Upload profile pictures and project assets directly to Cloudinary CDN and store secure links in database.
+- 👤 **User Profile & Social Links**: Manage bio/about, profile picture URL, GitHub link, LinkedIn link, and roles.
 - 📁 **Project Management**: Create, update, search, manage project listings, track project `visibility` (`PUBLIC`/`PRIVATE`), and broadcast `latestUpdate` notes.
 - 👥 **Team Member Operations**: Join projects, manage roles (`OWNER`, `MEMBER`), and assign project-specific titles (`FRONTEND DEV`, `BACKEND DEV`, etc.).
 - 🛠️ **Master Skill Catalog**: Centralized tech stack lookup table.
@@ -27,7 +26,6 @@
 - **Framework**: Spring Boot 3.x
 - **Security**: Spring Security + JWT (`jjwt-api` 0.12.x) + BCrypt
 - **ORM & Database**: Spring Data JPA / Hibernate, H2 / MySQL / PostgreSQL
-- **Media Storage**: Cloudinary Java SDK
 - **Utilities**: Lombok, ModelMapper
 - **Build Tool**: Gradle
 
@@ -48,7 +46,7 @@
    cd projectmate
    ```
 
-2. **Configure Database, JWT & Cloudinary Settings** (`src/main/resources/application.properties`):
+2. **Configure Database & JWT Settings** (`src/main/resources/application.properties`):
    ```properties
    spring.application.name=projectmate
 
@@ -68,11 +66,6 @@
    # Gemini AI Studio Configuration
    gemini.api.key=${GEMINI_API_KEY:}
    gemini.api.model=gemini-2.5-flash
-
-   # Cloudinary Media Storage
-   cloudinary.cloud-name=${CLOUDINARY_CLOUD_NAME:demo}
-   cloudinary.api-key=${CLOUDINARY_API_KEY:}
-   cloudinary.api-secret=${CLOUDINARY_API_SECRET:}
    ```
 
 3. **Build the Application**:
@@ -118,8 +111,7 @@ Authorization: Bearer <your_jwt_access_token>
 | `GET` | `/api/users/{id}` | Get user details by ID |
 | `POST` | `/api/users` | Create user |
 | `PUT` | `/api/users/{id}` | Update user details (`about`, `profilePic`, `githubLink`, `linkedinLink`) |
-| `POST` | `/api/users/{id}/profile-pic` | Upload user profile picture to Cloudinary and update DB |
-| `POST` | `/api/users/upload-image` | Upload any image to Cloudinary and return CDN URL |
+| `PUT` | `/api/users/{id}/profile-pic?url={url}` | Save client-generated profile picture URL to DB |
 | `DELETE` | `/api/users/{id}` | Delete user by ID |
 | `GET` | `/api/users/search?name={name}` | Search users by name |
 | `GET` | `/api/users/search/email?email={email}` | Search user by email |
@@ -142,13 +134,6 @@ Authorization: Bearer <your_jwt_access_token>
 
 ---
 
-### 📸 4. Image Upload Service (Cloudinary)
-
-- Integrated via `ImageUploader` service and Cloudinary Java SDK.
-- Uploads images securely to Cloudinary CDN and stores returned HTTPS links in database columns (`user_info.profile_pic`).
-
----
-
 ## 📁 Project Structure
 
 ```
@@ -159,7 +144,7 @@ com.proj.mate
 ├── entity          # JPA Entities
 ├── repository      # Spring Data JPA Repositories
 ├── security        # JWT Filter & Details
-└── service         # Business Logic & ImageUploader Services
+└── service         # Business Logic Services
 ```
 
 ---
