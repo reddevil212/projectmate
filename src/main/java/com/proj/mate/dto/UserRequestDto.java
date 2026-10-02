@@ -14,4 +14,8 @@ public class UserRequestDto {
     private String email;
     private String password;
     private String role;
+    private String about;
+    private String profilePic;
+    private String githubLink;
+    private String linkedinLink;
 }

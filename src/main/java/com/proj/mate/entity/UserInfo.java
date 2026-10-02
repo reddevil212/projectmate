@@ -33,6 +33,19 @@ public class UserInfo {
     @Column(name = "password")
     private String password;
 
+    @Column(name = "about")
+    private String about;
+
+    @Column(name = "profile_pic")
+    private String profilePic;
+
+    @Column(name = "github_link")
+    private String githubLink;
+
+    @Column(name = "linkedin_link")
+    private String linkedinLink;
+
+
     @Column(name = "role")
     private String role;
 

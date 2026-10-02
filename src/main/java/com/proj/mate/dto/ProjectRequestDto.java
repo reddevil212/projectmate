@@ -19,6 +19,11 @@ public class ProjectRequestDto {
     private int memberCount;
 
     @Builder.Default
+    private String visibility = "PUBLIC";
+
+    private String latestUpdate;
+
+    @Builder.Default
     private LocalDateTime createdAt = LocalDateTime.now();
 
     @Builder.Default

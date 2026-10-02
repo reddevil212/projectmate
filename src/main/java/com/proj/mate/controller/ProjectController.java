@@ -71,6 +71,15 @@ public class ProjectController {
         );
     }
 
+    @GetMapping("/search/visibility")
+    public ResponseEntity<List<ProjectResponseDto>> searchProjectsByVisibility(
+            @RequestParam String visibility) {
+
+        return ResponseEntity.ok(
+                projectService.getProjectByVisibility(visibility)
+        );
+    }
+
     @GetMapping("/search/status")
     public ResponseEntity<List<ProjectResponseDto>> searchProjectsByStatus(
             @RequestParam String status) {

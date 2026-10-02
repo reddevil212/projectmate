@@ -18,6 +18,8 @@ public class ProjectResponseDto {
     private String type;
     private String description;
     private int memberCount;
+    private String visibility;
+    private String latestUpdate;
     private LocalDateTime createdAt;
     private String status;
 }

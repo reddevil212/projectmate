@@ -2,22 +2,27 @@ package com.proj.mate.controller;
 
 import com.proj.mate.dto.UserRequestDto;
 import com.proj.mate.dto.UserResponseDto;
+import com.proj.mate.service.ImageUploader;
 import com.proj.mate.service.UserService;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
 
     private final UserService userService;
+    private final ImageUploader imageUploader;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService, ImageUploader imageUploader) {
         this.userService = userService;
+        this.imageUploader = imageUploader;
     }
 
     // Get all users
@@ -58,6 +63,34 @@ public class UserController {
             return ResponseEntity.ok(user);
         } catch (RuntimeException e) {
             return ResponseEntity.notFound().build();
+        }
+    }
+
+    // Upload user profile picture to Cloudinary and update profile_pic column in DB
+    @PostMapping("/{id}/profile-pic")
+    public ResponseEntity<UserResponseDto> uploadProfilePic(
+            @PathVariable Long id,
+            @RequestParam("file") MultipartFile file) {
+
+        try {
+            String imageUrl = imageUploader.uploadImage(file);
+            UserResponseDto updatedUser = userService.updateProfilePic(id, imageUrl);
+            return ResponseEntity.ok(updatedUser);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    // Upload generic image to Cloudinary and return URL
+    @PostMapping("/upload-image")
+    public ResponseEntity<Map<String, String>> uploadImage(
+            @RequestParam("file") MultipartFile file) {
+
+        try {
+            String imageUrl = imageUploader.uploadImage(file);
+            return ResponseEntity.ok(Map.of("url", imageUrl));
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 

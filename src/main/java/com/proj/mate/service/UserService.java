@@ -70,8 +70,24 @@ public class UserService {
         UserInfo existingUser = userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found with id: " + id));
 
-        existingUser.setName(updatedUserDto.getName());
-        existingUser.setEmail(updatedUserDto.getEmail());
+        if (updatedUserDto.getName() != null) {
+            existingUser.setName(updatedUserDto.getName());
+        }
+        if (updatedUserDto.getEmail() != null) {
+            existingUser.setEmail(updatedUserDto.getEmail());
+        }
+        if (updatedUserDto.getAbout() != null) {
+            existingUser.setAbout(updatedUserDto.getAbout());
+        }
+        if (updatedUserDto.getProfilePic() != null) {
+            existingUser.setProfilePic(updatedUserDto.getProfilePic());
+        }
+        if (updatedUserDto.getGithubLink() != null) {
+            existingUser.setGithubLink(updatedUserDto.getGithubLink());
+        }
+        if (updatedUserDto.getLinkedinLink() != null) {
+            existingUser.setLinkedinLink(updatedUserDto.getLinkedinLink());
+        }
 
         if (updatedUserDto.getPassword() != null && !updatedUserDto.getPassword().isEmpty()) {
             existingUser.setPassword(passwordEncoder.encode(updatedUserDto.getPassword()));
@@ -81,6 +97,16 @@ public class UserService {
             existingUser.setRole(updatedUserDto.getRole());
         }
 
+        UserInfo savedUser = userRepository.save(existingUser);
+        return modelMapper.map(savedUser, UserResponseDto.class);
+    }
+
+    @Transactional
+    public UserResponseDto updateProfilePic(Long id, String profilePicUrl) {
+        UserInfo existingUser = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found with id: " + id));
+
+        existingUser.setProfilePic(profilePicUrl);
         UserInfo savedUser = userRepository.save(existingUser);
         return modelMapper.map(savedUser, UserResponseDto.class);
     }

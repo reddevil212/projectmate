@@ -55,6 +55,12 @@ public class ProjectService {
                 .type(requestDto.getType())
                 .description(requestDto.getDescription())
                 .memberCount(requestDto.getMemberCount())
+                .visibility(
+                        requestDto.getVisibility() != null && !requestDto.getVisibility().trim().isEmpty()
+                                ? requestDto.getVisibility()
+                                : "PUBLIC"
+                )
+                .latestUpdate(requestDto.getLatestUpdate())
                 .createdAt(
                         requestDto.getCreatedAt() != null
                                 ? requestDto.getCreatedAt()
@@ -117,6 +123,14 @@ public class ProjectService {
     }
 
     @Transactional(readOnly = true)
+    public List<ProjectResponseDto> getProjectByVisibility(String visibility) {
+        return projectRepository.findByVisibility(visibility)
+                .stream()
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
     public List<ProjectResponseDto> getProjectByOwnerIdAndStatus(
             Long ownerId,
             String status
@@ -172,6 +186,14 @@ public class ProjectService {
             project.setStatus(requestDto.getStatus());
         }
 
+        if (requestDto.getVisibility() != null) {
+            project.setVisibility(requestDto.getVisibility());
+        }
+
+        if (requestDto.getLatestUpdate() != null) {
+            project.setLatestUpdate(requestDto.getLatestUpdate());
+        }
+
         if (requestDto.getMemberCount() >= 0) {
             project.setMemberCount(requestDto.getMemberCount());
         }
@@ -192,6 +214,4 @@ public class ProjectService {
 
         projectRepository.delete(project);
     }
-
-
 }

@@ -24,6 +24,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -58,8 +59,14 @@ public class Project {
     private LocalDateTime createdAt;
     @Column(name = "status")
     private String status;
+    @Column(name = "visibility")
+    private String visibility;
+    @Column(name = "latest_update")
+    private String latestUpdate; //this will store the latest update text by any user in the project.
 
-    @jakarta.persistence.PrePersist
+
+
+    @PrePersist
     public void prePersist() {
         if (this.createdAt == null) {
             this.createdAt = LocalDateTime.now();

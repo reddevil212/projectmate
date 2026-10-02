@@ -16,5 +16,9 @@ public class UserResponseDto {
     private String name;
     private String email;
     private String role;
+    private String about;
+    private String profilePic;
+    private String githubLink;
+    private String linkedinLink;
     private LocalDateTime createdAt;
 }
