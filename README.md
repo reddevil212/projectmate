@@ -14,6 +14,8 @@
 - ⚡ **Project Tech Stack Matching**: Map required skills and proficiency levels (`Beginner`, `Intermediate`, `Expert`) to projects.
 - 👔 **Project Roles Catalog**: Manage standardized open team positions across projects.
 - 🤖 **AI Project Analysis & Generation**: Use Google AI Studio Gemini API (`gemini-2.5-flash`) to analyze project prompts, generate structured project specs with 4 team member roles and tech stack requirements, and automatically persist projects to the database.
+- 🔔 **In-App Notifications**: Real-time user notifications for invitations, team updates, and read status tracking.
+- 📩 **Project Invitations**: Send, receive, accept, decline, and cancel project invitations with automatic team member onboarding.
 
 ---
 
@@ -227,12 +229,34 @@ Authorization: Bearer <your_jwt_access_token>
 | `POST` | `/api/ai/create-project?ownerId={ownerId}` | Analyze prompt & automatically create & persist project, skills, and roles in DB |
 | `POST` | `/api/ai/save-analysis?ownerId={ownerId}` | Persist an existing AI project analysis object into the database |
 
-#### Analyze Project Example Request Body:
-```json
-{
-  "prompt": "A real-time workspace for remote design teams featuring live canvas sharing and AI asset generation."
-}
-```
+---
+
+### 🔔 9. Notification Management (`/api/notifications`)
+
+| Method | Endpoint | Description |
+| :--- | :--- | :--- |
+| `POST` | `/api/notifications` | Create a user notification |
+| `GET` | `/api/notifications/user/{userId}` | Get all non-deleted notifications for a user |
+| `GET` | `/api/notifications/user/{userId}/unread` | Get unread notifications for a user |
+| `GET` | `/api/notifications/user/{userId}/unread-count` | Get count of unread notifications |
+| `PUT` | `/api/notifications/{id}/read?userId={userId}` | Mark notification as read |
+| `PUT` | `/api/notifications/user/{userId}/read-all` | Mark all notifications as read for a user |
+| `DELETE` | `/api/notifications/{id}?userId={userId}` | Soft delete notification |
+
+---
+
+### 📩 10. Invitation Management (`/api/invitations`)
+
+| Method | Endpoint | Description |
+| :--- | :--- | :--- |
+| `POST` | `/api/invitations` | Send a project invitation (triggers notification to receiver) |
+| `GET` | `/api/invitations/receiver/{receiverId}` | Get all invitations received by user |
+| `GET` | `/api/invitations/receiver/{receiverId}/pending` | Get pending invitations received by user |
+| `GET` | `/api/invitations/sender/{senderId}` | Get all invitations sent by user |
+| `GET` | `/api/invitations/project/{projectId}` | Get all invitations for a project |
+| `PUT` | `/api/invitations/{id}/accept?receiverId={receiverId}` | Accept invitation (auto-adds member to project & notifies sender) |
+| `PUT` | `/api/invitations/{id}/reject?receiverId={receiverId}` | Decline invitation (notifies sender) |
+| `PUT` | `/api/invitations/{id}/cancel?senderId={senderId}` | Cancel pending invitation |
 
 ---
 

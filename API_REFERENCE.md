@@ -25,7 +25,9 @@ Welcome to the **ProjectMate API Reference**. This document provides comprehensi
 6. [Project Tech Stack Requirements APIs (`/api/project-skills`)](#6-project-tech-stack-requirements-apis)
 7. [Project Roles Catalog APIs (`/api/project-roles`)](#7-project-roles-catalog-apis)
 8. [AI Assistance & Project Generation APIs (`/api/ai`)](#8-ai-assistance--project-generation-apis)
-9. [Health Check APIs (`/health`, `/api/health`)](#9-health-check-apis)
+9. [Notification Management APIs (`/api/notifications`)](#9-notification-management-apis)
+10. [Invitation Management APIs (`/api/invitations`)](#10-invitation-management-apis)
+11. [Health Check APIs (`/health`, `/api/health`)](#11-health-check-apis)
 
 ---
 
@@ -1029,58 +1031,211 @@ true
 #### Query Params:
 - `ownerId` (Long, required): ID of the user creating the project.
 
+---
+
+## 9. Notification Management APIs
+
+### 9.1 Create Notification
+- **Method**: `POST`
+- **Endpoint**: `/api/notifications`
+- **Description**: Creates a new user notification.
+- **Auth Required**: Yes
+
 #### Request:
 ```json
 {
-  "name": "DesignSync AI",
-  "type": "Full Stack",
-  "description": "A real-time workspace for remote design teams featuring live canvas sharing and AI asset generation.",
-  "memberCount": 4,
-  "status": "OPEN",
-  "projectSkills": [
-    {
-      "skillName": "Next.js",
-      "level": "Expert"
-    }
-  ],
-  "roles": [
-    {
-      "roleName": "Frontend Lead",
-      "skills": [
-        {
-          "skillName": "Next.js",
-          "proficiencyRequired": 5
-        }
-      ]
-    }
-  ]
+  "userId": 1,
+  "message": "Welcome to ProjectMate! Explore open projects and match your skills.",
+  "expiresAt": "2026-10-30T00:00:00"
 }
 ```
 
-#### Response (`200 OK`):
+#### Response (`201 Created`):
 ```json
 {
-  "id": 10,
-  "owner": {
-    "id": 1,
-    "name": "Sayan Pal",
-    "email": "sayan@example.com",
-    "createdAt": "2026-09-26T10:30:00"
-  },
-  "name": "DesignSync AI",
-  "type": "Full Stack",
-  "description": "A real-time workspace for remote design teams...",
-  "memberCount": 4,
-  "createdAt": "2026-09-29T12:00:00",
-  "status": "OPEN"
+  "id": 1,
+  "userId": 1,
+  "userName": "Sayan Pal",
+  "message": "Welcome to ProjectMate! Explore open projects and match your skills.",
+  "isRead": false,
+  "createdAt": "2026-10-02T08:30:00",
+  "expiresAt": "2026-10-30T00:00:00",
+  "readAt": null,
+  "deletedAt": null
 }
 ```
 
 ---
 
-## 9. Health Check APIs
+### 9.2 Get All Notifications for User
+- **Method**: `GET`
+- **Endpoint**: `/api/notifications/user/{userId}`
+- **Description**: Retrieves all non-deleted notifications for a specified user ID.
+- **Auth Required**: Yes
 
-### 9.1 Health Status Check
+---
+
+### 9.3 Get Unread Notifications for User
+- **Method**: `GET`
+- **Endpoint**: `/api/notifications/user/{userId}/unread`
+- **Description**: Retrieves all unread, non-deleted notifications for a specified user ID.
+- **Auth Required**: Yes
+
+---
+
+### 9.4 Get Unread Notification Count
+- **Method**: `GET`
+- **Endpoint**: `/api/notifications/user/{userId}/unread-count`
+- **Description**: Returns the integer count of unread notifications for a specified user ID.
+- **Auth Required**: Yes
+
+#### Response (`200 OK`):
+```json
+3
+```
+
+---
+
+### 9.5 Mark Notification as Read
+- **Method**: `PUT`
+- **Endpoint**: `/api/notifications/{id}/read?userId={userId}`
+- **Description**: Marks a specific notification as read.
+- **Auth Required**: Yes
+
+---
+
+### 9.6 Mark All Notifications as Read
+- **Method**: `PUT`
+- **Endpoint**: `/api/notifications/user/{userId}/read-all`
+- **Description**: Marks all unread notifications for a user as read.
+- **Auth Required**: Yes
+
+---
+
+### 9.7 Soft Delete Notification
+- **Method**: `DELETE`
+- **Endpoint**: `/api/notifications/{id}?userId={userId}`
+- **Description**: Soft deletes a notification for a user.
+- **Auth Required**: Yes
+
+#### Response (`204 No Content`): Empty response body.
+
+---
+
+## 10. Invitation Management APIs
+
+### 10.1 Send Project Invitation
+- **Method**: `POST`
+- **Endpoint**: `/api/invitations`
+- **Description**: Sends a project invitation from a sender user to a receiver user for a specific project. Automatically triggers a notification to the receiver.
+- **Auth Required**: Yes
+
+#### Request:
+```json
+{
+  "senderId": 1,
+  "receiverId": 2,
+  "projectId": 6,
+  "expiresAt": "2026-10-15T00:00:00"
+}
+```
+
+#### Response (`201 Created`):
+```json
+{
+  "id": 1,
+  "sender": {
+    "id": 1,
+    "name": "Sayan Pal",
+    "email": "sayan@example.com"
+  },
+  "receiver": {
+    "id": 2,
+    "name": "Alice Smith",
+    "email": "alice@example.com"
+  },
+  "project": {
+    "id": 6,
+    "name": "ProjectMate Platform"
+  },
+  "status": "PENDING",
+  "createdAt": "2026-10-02T08:30:00",
+  "expiresAt": "2026-10-15T00:00:00",
+  "acceptedAt": null,
+  "rejectedAt": null
+}
+```
+
+---
+
+### 10.2 Get Received Invitations
+- **Method**: `GET`
+- **Endpoint**: `/api/invitations/receiver/{receiverId}`
+- **Description**: Returns all project invitations received by a user.
+- **Auth Required**: Yes
+
+---
+
+### 10.3 Get Pending Received Invitations
+- **Method**: `GET`
+- **Endpoint**: `/api/invitations/receiver/{receiverId}/pending`
+- **Description**: Returns pending invitations received by a user.
+- **Auth Required**: Yes
+
+---
+
+### 10.4 Get Sent Invitations
+- **Method**: `GET`
+- **Endpoint**: `/api/invitations/sender/{senderId}`
+- **Description**: Returns all project invitations sent by a user.
+- **Auth Required**: Yes
+
+---
+
+### 10.5 Get Invitations for a Project
+- **Method**: `GET`
+- **Endpoint**: `/api/invitations/project/{projectId}`
+- **Description**: Returns all invitations associated with a specific project ID.
+- **Auth Required**: Yes
+
+---
+
+### 10.6 Accept Project Invitation
+- **Method**: `PUT`
+- **Endpoint**: `/api/invitations/{id}/accept?receiverId={receiverId}`
+- **Description**: Accepts a project invitation, automatically adds the user as a `ProjectMember` with role `MEMBER`, and notifies the sender.
+- **Auth Required**: Yes
+
+#### Response (`200 OK`):
+```json
+{
+  "id": 1,
+  "status": "ACCEPTED",
+  "acceptedAt": "2026-10-02T08:35:00"
+}
+```
+
+---
+
+### 10.7 Reject Project Invitation
+- **Method**: `PUT`
+- **Endpoint**: `/api/invitations/{id}/reject?receiverId={receiverId}`
+- **Description**: Declines a project invitation and notifies the sender.
+- **Auth Required**: Yes
+
+---
+
+### 10.8 Cancel Project Invitation
+- **Method**: `PUT`
+- **Endpoint**: `/api/invitations/{id}/cancel?senderId={senderId}`
+- **Description**: Cancels a pending project invitation sent by the sender.
+- **Auth Required**: Yes
+
+---
+
+## 11. Health Check APIs
+
+### 11.1 Health Status Check
 - **Method**: `GET`
 - **Endpoint**: `/health` or `/api/health`
 - **Description**: Simple ping endpoint to verify application operational health.
