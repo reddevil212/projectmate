@@ -27,7 +27,8 @@ Welcome to the **ProjectMate API Reference**. This document provides comprehensi
 8. [AI Assistance & Project Generation APIs (`/api/ai`)](#8-ai-assistance--project-generation-apis)
 9. [Notification Management APIs (`/api/notifications`)](#9-notification-management-apis)
 10. [Invitation Management APIs (`/api/invitations`)](#10-invitation-management-apis)
-11. [Health Check APIs (`/health`, `/api/health`)](#11-health-check-apis)
+11. [User Skills Profile APIs (`/api/user-skills`)](#11-user-skills-profile-apis)
+12. [Health Check APIs (`/health`, `/api/health`)](#12-health-check-apis)
 
 ---
 
@@ -1233,9 +1234,117 @@ true
 
 ---
 
-## 11. Health Check APIs
+## 11. User Skills Profile APIs
 
-### 11.1 Health Status Check
+### 11.1 Add or Update User Skill
+- **Method**: `POST`
+- **Endpoint**: `/api/user-skills`
+- **Description**: Associates a skill with a user profile along with their proficiency level. Accepts either `skillId` or `skillName` (auto-creates skill if new). If already associated, updates proficiency.
+- **Auth Required**: Yes
+
+#### Request:
+```json
+{
+  "userId": 1,
+  "skillName": "Java",
+  "proficiency": 5
+}
+```
+
+#### Response (`201 Created`):
+```json
+{
+  "id": 1,
+  "userId": 1,
+  "skill": {
+    "id": 1,
+    "name": "Java"
+  },
+  "proficiency": 5
+}
+```
+
+---
+
+### 11.2 Get User Skill by ID
+- **Method**: `GET`
+- **Endpoint**: `/api/user-skills/{id}`
+- **Description**: Retrieves details for a specific user skill association by ID.
+- **Auth Required**: Yes
+
+---
+
+### 11.3 Get All Skills for a User
+- **Method**: `GET`
+- **Endpoint**: `/api/user-skills/user/{userId}`
+- **Description**: Returns all skills possessed by a specific user.
+- **Auth Required**: Yes
+
+#### Response (`200 OK`):
+```json
+[
+  {
+    "id": 1,
+    "userId": 1,
+    "skill": { "id": 1, "name": "Java" },
+    "proficiency": 5
+  },
+  {
+    "id": 2,
+    "userId": 1,
+    "skill": { "id": 2, "name": "Spring Boot" },
+    "proficiency": 4
+  }
+]
+```
+
+---
+
+### 11.4 Get Users Having a Skill
+- **Method**: `GET`
+- **Endpoint**: `/api/user-skills/skill/{skillId}`
+- **Description**: Returns all user skill profiles possessing a specified skill ID.
+- **Auth Required**: Yes
+
+---
+
+### 11.5 Filter Users by Skill and Minimum Proficiency
+- **Method**: `GET`
+- **Endpoint**: `/api/user-skills/skill/{skillId}/min-proficiency/{minProficiency}`
+- **Description**: Filters users who possess a skill with at least the specified minimum proficiency rating.
+- **Auth Required**: Yes
+
+---
+
+### 11.6 Update User Skill Proficiency
+- **Method**: `PUT`
+- **Endpoint**: `/api/user-skills/{id}?proficiency={proficiency}`
+- **Description**: Updates the proficiency level for an existing user skill.
+- **Auth Required**: Yes
+
+---
+
+### 11.7 Delete User Skill
+- **Method**: `DELETE`
+- **Endpoint**: `/api/user-skills/{id}`
+- **Description**: Removes a skill from a user profile by ID.
+- **Auth Required**: Yes
+
+#### Response (`204 No Content`): Empty response body.
+
+---
+
+### 11.8 Remove Skill from User Profile
+- **Method**: `DELETE`
+- **Endpoint**: `/api/user-skills/user/{userId}/skill/{skillId}`
+- **Description**: Removes a skill from a user profile using user ID and skill ID.
+- **Auth Required**: Yes
+
+---
+
+## 12. Health Check APIs
+
+### 12.1 Health Status Check
 - **Method**: `GET`
 - **Endpoint**: `/health` or `/api/health`
 - **Description**: Simple ping endpoint to verify application operational health.

@@ -8,6 +8,7 @@
 
 - 🔐 **Stateless JWT Authentication**: Secure user registration, authentication, access tokens, and refresh token rotation.
 - 👤 **User Management**: Comprehensive endpoints to search, retrieve, update, and manage user profiles and roles.
+- 🌟 **User Skills Profile**: Map skills and proficiency ratings to user profiles for team matching.
 - 📁 **Project Management**: Create, update, search, and manage project listings.
 - 👥 **Team Member Operations**: Join projects, manage roles (`OWNER`, `MEMBER`), and assign project-specific titles (`FRONTEND DEV`, `BACKEND DEV`, etc.).
 - 🛠️ **Master Skill Catalog**: Centralized tech stack lookup table.
@@ -257,6 +258,21 @@ Authorization: Bearer <your_jwt_access_token>
 | `PUT` | `/api/invitations/{id}/accept?receiverId={receiverId}` | Accept invitation (auto-adds member to project & notifies sender) |
 | `PUT` | `/api/invitations/{id}/reject?receiverId={receiverId}` | Decline invitation (notifies sender) |
 | `PUT` | `/api/invitations/{id}/cancel?senderId={senderId}` | Cancel pending invitation |
+
+---
+
+### 🌟 11. User Skills Profile (`/api/user-skills`)
+
+| Method | Endpoint | Description |
+| :--- | :--- | :--- |
+| `POST` | `/api/user-skills` | Associate a skill & proficiency with a user (by `skillId` or `skillName`) |
+| `GET` | `/api/user-skills/{id}` | Get user skill details by ID |
+| `GET` | `/api/user-skills/user/{userId}` | List all skills for a user |
+| `GET` | `/api/user-skills/skill/{skillId}` | List all users possessing a skill |
+| `GET` | `/api/user-skills/skill/{skillId}/min-proficiency/{minProficiency}` | Filter users having a skill with minimum proficiency |
+| `PUT` | `/api/user-skills/{id}?proficiency={proficiency}` | Update user skill proficiency |
+| `DELETE` | `/api/user-skills/{id}` | Delete user skill by ID |
+| `DELETE` | `/api/user-skills/user/{userId}/skill/{skillId}` | Remove skill from user profile |
 
 ---
 
