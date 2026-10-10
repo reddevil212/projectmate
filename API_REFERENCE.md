@@ -37,7 +37,7 @@ Welcome to the official **ProjectMate REST API Reference**. This production-grad
 10. [Invitation Management APIs (`/api/invitations`)](#10-invitation-management-apis)
 11. [User Skills Profile APIs (`/api/user-skills`)](#11-user-skills-profile-apis)
 12. [Automated Team Referral & Matchmaking APIs (`/api/refer`)](#12-automated-team-referral--matchmaking-apis)
-13. [Health Check APIs (`/health`, `/api/health`)](#13-health-check-apis)
+13. [Health Check APIs (`/api/health`)](#13-health-check-apis)
 
 ---
 
@@ -1176,7 +1176,7 @@ Welcome to the official **ProjectMate REST API Reference**. This production-grad
 
 ### 13.1 Health Status Check
 - **Method**: `GET`
-- **Endpoint**: `/api/health` or `/health`
+- **Endpoint**: `/api/health` 
 - **Description**: Verifies operational health of the application.
 - **Auth Required**: No
 
