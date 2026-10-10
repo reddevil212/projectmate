@@ -15,6 +15,7 @@
 - ⚡ **Project Tech Stack Matching**: Map required skills and proficiency levels (`Beginner`, `Intermediate`, `Expert`) to projects.
 - 👔 **Project Roles Catalog**: Manage standardized open team positions across projects.
 - 🤖 **AI Project Analysis & Generation**: Use Google AI Studio Gemini API (`gemini-2.5-flash`) to analyze project prompts, generate structured project specs with 4 team member roles and tech stack requirements, and automatically persist projects to the database.
+- 🎯 **Automated Team Matchmaking & Referral**: Algorithm that evaluates candidate user skill profiles against project/AI-suggested roles, calculates percentage match scores (0-100%), and recommends optimal team compositions.
 - 🔔 **In-App Notifications**: Real-time user notifications for invitations, team updates, and read status tracking.
 - 📩 **Project Invitations**: Send, receive, accept, decline, and cancel project invitations with automatic team member onboarding.
 
@@ -117,19 +118,13 @@ Authorization: Bearer <your_jwt_access_token>
 
 ---
 
-### 📂 3. Projects (`/api/projects`)
+### 🎯 12. Automated Team Referral & Matchmaking (`/api/refer`)
 
 | Method | Endpoint | Description |
 | :--- | :--- | :--- |
-| `POST` | `/api/projects/create` | Create a project (supports `visibility`, `latestUpdate`) |
-| `GET` | `/api/projects/{id}` | Get project details by ID |
-| `GET` | `/api/projects?ownerId={ownerId}` | List all projects owned by a user |
-| `GET` | `/api/projects/search?name={name}` | Search projects by name |
-| `GET` | `/api/projects/search/type?type={type}` | Search projects by type |
-| `GET` | `/api/projects/search/visibility?visibility={visibility}` | Search projects by visibility (`PUBLIC`, `PRIVATE`) |
-| `GET` | `/api/projects/search/status?status={status}` | Search projects by status (`OPEN`, `IN_PROGRESS`) |
-| `PUT` | `/api/projects/update/{id}` | Update project info (including `visibility` and `latestUpdate`) |
-| `DELETE` | `/api/projects/delete/{id}` | Delete project |
+| `GET` | `/api/refer/suggest-team/{projectId}` | Rank candidate users for each role in an existing project with match scores |
+| `POST` | `/api/refer/suggest-team` | Rank candidate users for custom or AI-generated project roles & skills |
+| `GET` | `/api/refer/match-users-for-role/{roleId}` | Match and rank candidate users specifically for a single role ID |
 
 ---
 
